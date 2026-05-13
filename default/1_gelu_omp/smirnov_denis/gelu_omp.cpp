@@ -1,4 +1,8 @@
+#include <algorithm>
+#include <chrono>
 #include <cmath>
+#include <stdlib.h>
+#include <stdio.h>
 #include "gelu_omp.h"
 
 inline float fast_tanh(float x) {
@@ -21,4 +25,29 @@ std::vector<float> GeluOMP(const std::vector<float>& input) {
     }
 
     return output;
+}
+
+int main() {
+    size_t n = 134217728u;
+    std::vector<float> x(n);
+    for (size_t i = 0; i < n; i++) {
+        x[i] = ((float)rand()/RAND_MAX)*20.f - 10.f;
+    }
+
+    // Warming-up
+    auto y = GeluOMP(x);
+   
+    // Performance Measuring
+    std::vector<double> time_list;
+    for (int i = 0; i < 4; ++i) {
+        auto start = std::chrono::high_resolution_clock::now();
+        auto y = GeluOMP(x);
+        auto end = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> duration = end - start;
+        time_list.push_back(duration.count());
+    }
+    double time = *std::min_element(time_list.begin(), time_list.end());
+    printf("time = %.2f\n", time);
+
+    return 0;
 }

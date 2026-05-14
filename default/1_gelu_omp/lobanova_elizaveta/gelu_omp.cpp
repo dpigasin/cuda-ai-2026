@@ -9,15 +9,6 @@
 #include <omp.h>
 #include <immintrin.h>
 
-static std::vector<float> GeluOMPRef(const std::vector<float>& input) {
-    std::vector<float> output;
-    output.reserve(input.size());
-    for (const auto& val : input) {
-        output.push_back(val * 0.5f * (1.0f + tanh(sqrt(2.0f / M_PI) * (val + 0.044715f * val * val * val))));
-    }
-    return output;
-}
-
 static __m256 exp256_ps(__m256 in) {
     float data[8];
     _mm256_storeu_ps(data, in);
@@ -73,6 +64,16 @@ std::vector<float> GeluOMP(const std::vector<float>& input) {
     return output;
 }
 
+#if 0
+static std::vector<float> GeluOMPRef(const std::vector<float>& input) {
+    std::vector<float> output;
+    output.reserve(input.size());
+    for (const auto& val : input) {
+        output.push_back(val * 0.5f * (1.0f + tanh(sqrt(2.0f / M_PI) * (val + 0.044715f * val * val * val))));
+    }
+    return output;
+}
+
 int main() {
     constexpr size_t dataSize = 13687989;
     constexpr float minVal = 0.0f;
@@ -102,3 +103,4 @@ int main() {
     double time = *std::min_element(time_list.begin(), time_list.end());
     std::cout << "Time: " << time << " seconds" << std::endl;
 }
+#endif

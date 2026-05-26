@@ -415,9 +415,9 @@ One may use numba or C strings to write CUDA kernels.
 |default|zinoviev_vladimir|0.1751|5|
 |default|smirnov_denis|0.1757|1|
 |**REF**|**REF**|**0.1864**|**-**|
+|default|pinegina_natalia|0.2180|7|
 |default|lukicheva_polina|0.2290|4|
 |default|chekmaryov_petr|TEST FAILED|-|
-|default|pinegina_natalia|BUILD FAILED|-|
 
 ## 3_naive_gemm_cuda (4096 elements)
 |Group|Name|Result|Rank|
@@ -457,9 +457,9 @@ One may use numba or C strings to write CUDA kernels.
 |default|chekmaryov_petr|1/7|60|
 |default|chervyakov_ivan|1/7|53|
 |default|lobanova_elizaveta|2/7|120|
-|default|lukicheva_polina|2/7|101|
+|default|lukicheva_polina|2/7|100|
 |default|pigasin_dmitry|1/7|48|
-|default|pinegina_natalia|1/7|45|
+|default|pinegina_natalia|2/7|98|
 |default|pisarevsky_vadim|2/7|126|
 |default|smirnov_denis|3/7|181|
 |default|vikhrev_ivan|1/7|46|

@@ -409,6 +409,7 @@ One may use numba or C strings to write CUDA kernels.
 |Group|Name|Result|Rank|
 |-----|----|------|----|
 |**FAST**|**FAST**|**0.1186**|**-**|
+|default|zvorykin_aleksandr|0.1598|8|
 |default|znamenskiy_mikhail|0.1648|6|
 |default|pisarevsky_vadim|0.1653|2|
 |default|lobanova_elizaveta|0.1680|3|
@@ -457,17 +458,17 @@ One may use numba or C strings to write CUDA kernels.
 |-----|----|------|-----|
 |default|chekmaryov_petr|1/7|60|
 |default|chervyakov_ivan|1/7|53|
-|default|lobanova_elizaveta|2/7|120|
-|default|lukicheva_polina|2/7|100|
+|default|lobanova_elizaveta|2/7|119|
+|default|lukicheva_polina|2/7|99|
 |default|pigasin_dmitry|1/7|48|
-|default|pinegina_natalia|2/7|98|
-|default|pisarevsky_vadim|2/7|126|
-|default|smirnov_denis|4/7|245|
+|default|pinegina_natalia|2/7|97|
+|default|pisarevsky_vadim|2/7|125|
+|default|smirnov_denis|4/7|244|
 |default|vikhrev_ivan|1/7|46|
 |default|zemskov_roman|0/7|0|
-|default|zinoviev_vladimir|3/7|174|
-|default|znamenskiy_mikhail|2/7|109|
-|default|zvorykin_aleksandr|1/7|53|
+|default|zinoviev_vladimir|3/7|173|
+|default|znamenskiy_mikhail|2/7|108|
+|default|zvorykin_aleksandr|2/7|110|
 
 Passed: 0
 

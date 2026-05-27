@@ -441,6 +441,7 @@ One may use numba or C strings to write CUDA kernels.
 |Group|Name|Result|Rank|
 |-----|----|------|----|
 |**FAST**|**FAST**|**0.0388**|**-**|
+|default|smirnov_denis|0.0438|1|
 |**REF**|**REF**|**0.0467**|**-**|
 
 ## 6_softmax_cuda (8192x16384 elements)
@@ -465,7 +466,7 @@ One may use numba or C strings to write CUDA kernels.
 |default|pigasin_dmitry|1/7|48|
 |default|pinegina_natalia|2/7|96|
 |default|pisarevsky_vadim|2/7|125|
-|default|smirnov_denis|4/7|243|
+|default|smirnov_denis|5/7|307|
 |default|vikhrev_ivan|1/7|46|
 |default|zemskov_roman|0/7|0|
 |default|zinoviev_vladimir|3/7|172|

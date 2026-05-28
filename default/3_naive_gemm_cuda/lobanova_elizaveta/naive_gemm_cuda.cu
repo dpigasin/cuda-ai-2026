@@ -1,4 +1,4 @@
-#include "native_gemm_cuda.h"
+#include "naive_gemm_cuda.h"
 
 #include <cuda/cmath>
 #include <chrono>

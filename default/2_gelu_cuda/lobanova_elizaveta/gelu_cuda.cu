@@ -16,30 +16,28 @@ __global__ void GeluKernel(float* input, int inputSize) {
 
 std::vector<float> GeluCUDA(const std::vector<float>& input) {
     const int inputSize = input.size();
+    const int bitSize = inputSize * sizeof(float);
     const float* inData = input.data();
 
     float* devInput = nullptr;
-    cudaMalloc(&devInput, inputSize * sizeof(float));
+    cudaMalloc(&devInput, bitSize);
 
-    cudaStream_t stream1, stream2;
+    cudaStream_t stream1;
     cudaStreamCreate(&stream1);
-    cudaStreamCreate(&stream2);
 
-    cudaMemcpyAsync(devInput, inData, inputSize * sizeof(float), cudaMemcpyDefault, stream1);
+    cudaMemcpyAsync(devInput, inData, bitSize, cudaMemcpyHostToDevice, stream1);
 
-    int threads = 256;
+    constexpr int threads = 256;
     int blocks = cuda::ceil_div(inputSize, threads);
-    GeluKernel<<<blocks, threads, 0, stream2>>>(devInput, inputSize);
+    GeluKernel<<<blocks, threads>>>(devInput, inputSize);
     
     std::vector<float> output(inputSize);
     float* outData = output.data();
 
-    cudaMemcpyAsync(outData, devInput, inputSize * sizeof(float), cudaMemcpyDefault, stream1);
+    cudaMemcpyAsync(outData, devInput, bitSize, cudaMemcpyDeviceToHost, stream1);
 
     cudaStreamSynchronize(stream1);
-    cudaStreamSynchronize(stream2);
     cudaStreamDestroy(stream1);
-    cudaStreamDestroy(stream2);
     cudaFree(devInput);
 
     return output;

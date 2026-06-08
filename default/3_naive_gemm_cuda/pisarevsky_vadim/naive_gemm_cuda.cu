@@ -31,7 +31,7 @@ __global__ void vecNaiveGemm(const float* A, const float* B, float* C, int n) {
         C[(y+1)*n + x] = s1;
         C[(y+2)*n + x] = s2;
         C[(y+3)*n + x] = s3;
-    } else if (x + n && y < n) {
+    } else if (x < n && y < n) {
         float s0 = 0.f, s1 = 0.f, s2 = 0.f, s3 = 0.f;
 
         for (int i = 0; i < n; ++i) {

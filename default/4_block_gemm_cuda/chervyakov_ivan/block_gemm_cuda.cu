@@ -41,29 +41,8 @@ __global__ void blockGemmKernelExtShMem(const float *a, const float *b, float *c
 std::vector<float> BlockGemmCUDA(const std::vector<float>& a,
                                  const std::vector<float>& b,
                                  int n) {
-    int deviceId = 0; 
-    cudaDeviceProp prop;
-    cudaGetDeviceProperties(&prop, deviceId);
-    
-    // 1. Threads upper bound: threads_per_block = BLOCK_SIZE * BLOCK_SIZE <= maxThreadsPerBlock
-    int max_block_side_threads = std::sqrt(prop.maxThreadsPerBlock);
-    
-    // 2. Shared Memory upper bound : 2 * BLOCK_SIZE * BLOCK_SIZE * sizeof(float) <= sharedMemPerBlock
-    int max_shared_bytes = prop.sharedMemPerBlock;
-    int max_block_side_shared = std::sqrt(max_shared_bytes / (2 * sizeof(float)));
-
-    int calculated_block_size = std::min({max_block_side_threads, max_block_side_shared, prop.maxThreadsDim[0]});
-    
-    //3. Match with warp size
-    if (calculated_block_size >= 32) {
-        calculated_block_size = 32;
-    } else if (calculated_block_size >= 16) {
-        calculated_block_size = 16;
-    } else {
-        calculated_block_size = 8;
-    }
-
-    size_t sharedMemBytes = 2 * calculated_block_size * calculated_block_size * sizeof(float);
+    constexpr int blockSize = 16;
+    size_t sharedMemBytes = 2 * blockSize * blockSize * sizeof(float);
 
 
     size_t N = n * n;
@@ -92,13 +71,10 @@ std::vector<float> BlockGemmCUDA(const std::vector<float>& a,
     cudaMemcpyAsync(dev_a, host_a, size, cudaMemcpyHostToDevice, stream);
     cudaMemcpyAsync(dev_b, host_b, size, cudaMemcpyHostToDevice, stream);
 
-    int blockSize, minGridSize;
-    cudaOccupancyMaxPotentialBlockSize(&minGridSize, &blockSize, (void *)naiveGemmKernel, 0, N);
-
-    dim3 threads(calculated_block_size, calculated_block_size);
-    int blocksNum = cuda::ceil_div(n, calculated_block_size);
+    dim3 threads(blockSize, blockSize);
+    int blocksNum = cuda::ceil_div(n, blockSize);
     dim3 blocks(blocksNum, blocksNum);
-    blockGemmKernelExtShMem<<<blocks, threads, sharedMemBytes, stream>>>(dev_a, dev_b, dev_c, n, calculated_block_size);
+    blockGemmKernelExtShMem<<<blocks, threads, sharedMemBytes, stream>>>(dev_a, dev_b, dev_c, n, blockSize);
 
     cudaMemcpyAsync(host_c, dev_c, size, cudaMemcpyDeviceToHost, stream);
 
